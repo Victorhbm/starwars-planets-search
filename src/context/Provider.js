@@ -4,20 +4,33 @@ import fetchPlanets from '../services/API';
 import PlanetsContext from './PlanetsContext';
 
 function Provider({ children }) {
-  const [planets, setPlanets] = useState([]);
+  const [data, setData] = useState([]);
   const [filterByName, setFilterByName] = useState({ name: '' });
+  const [filterByNumericValues, setFilterByNumericValues] = useState([{
+    column: '',
+    comparison: '',
+    value: '0',
+  }]);
 
   async function getPlanets() {
-    const data = await fetchPlanets();
-    setPlanets(data);
+    const planets = await fetchPlanets();
+    setData(planets);
   }
 
   useEffect(() => {
     getPlanets();
   }, []);
 
+  const valueToContext = {
+    data,
+    setFilterByName,
+    filterByName,
+    setFilterByNumericValues,
+    filterByNumericValues,
+  };
+
   return (
-    <PlanetsContext.Provider value={ { data: planets, setFilterByName, filterByName } }>
+    <PlanetsContext.Provider value={ valueToContext }>
       {children}
     </PlanetsContext.Provider>
   );
