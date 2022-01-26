@@ -6,11 +6,7 @@ import PlanetsContext from './PlanetsContext';
 function Provider({ children }) {
   const [data, setData] = useState([]);
   const [filterByName, setFilterByName] = useState({ name: '' });
-  const [filterByNumericValues, setFilterByNumericValues] = useState([{
-    column: '',
-    comparison: '',
-    value: '0',
-  }]);
+  const [filterByNumericValues, setFilterByNumericValues] = useState([]);
 
   async function getPlanets() {
     const planets = await fetchPlanets();

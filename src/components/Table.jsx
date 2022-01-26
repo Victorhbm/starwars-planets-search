@@ -5,8 +5,8 @@ export default function Table() {
   const { data, filterByName, filterByNumericValues } = useContext(PlanetsContext);
 
   function filterPlanets() {
-    const { column, comparison, value } = filterByNumericValues[0];
-    if (column.length > 0 && data.length > 0) {
+    if (filterByNumericValues.length > 0 && data.length > 0) {
+      const { column, comparison, value } = filterByNumericValues[0];
       return data.filter((planet) => {
         switch (comparison) {
         case 'maior que':

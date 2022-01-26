@@ -6,6 +6,13 @@ function Filter() {
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState('0');
+  const [columns, setColumns] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
   const { setFilterByName, setFilterByNumericValues } = useContext(PlanetsContext);
 
   function inputNameChange(event) {
@@ -17,11 +24,15 @@ function Filter() {
 
   function sendFilter(e) {
     e.preventDefault();
+
     setFilterByNumericValues([{
       column,
       comparison,
       value,
     }]);
+
+    const newColumns = columns.filter((col) => col !== column);
+    setColumns(newColumns);
   }
 
   return (
@@ -42,11 +53,9 @@ function Filter() {
             value={ column }
             onChange={ (e) => setColumn(e.target.value) }
           >
-            <option value="population">population</option>
-            <option value="orbital_period">orbital_period</option>
-            <option value="diameter">diameter</option>
-            <option value="rotation_period">rotation_period</option>
-            <option value="surface_water">surface_water</option>
+            {columns.map((col) => (
+              <option value={ col } key={ col }>{ col }</option>
+            ))}
           </select>
         </label>
 
