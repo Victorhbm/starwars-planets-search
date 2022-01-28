@@ -6,14 +6,14 @@ function Filter() {
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState('0');
-  const [columns, setColumns] = useState([
-    'population',
-    'orbital_period',
-    'diameter',
-    'rotation_period',
-    'surface_water',
-  ]);
-  const { setFilterByName, setFilterByNumericValues } = useContext(PlanetsContext);
+  const {
+    setFilterByName,
+    setFilterByNumericValues,
+    filterByNumericValues,
+    columns,
+    setColumns,
+    allColumns,
+  } = useContext(PlanetsContext);
 
   function inputNameChange(event) {
     setName(event.target.value);
@@ -22,17 +22,31 @@ function Filter() {
     });
   }
 
+  function filterColumns(filterNumeric) {
+    const newFilterColumns = allColumns
+      .filter((item) => !filterNumeric
+        .some((el) => el.column === item));
+    setColumns(newFilterColumns);
+
+    setColumn(newFilterColumns[0]);
+  }
+
   function sendFilter(e) {
     e.preventDefault();
 
-    setFilterByNumericValues([{
-      column,
-      comparison,
-      value,
-    }]);
+    const newFilterByNumericValues = [
+      ...filterByNumericValues,
+      {
+        column,
+        comparison,
+        value,
+      },
+    ];
 
-    const newColumns = columns.filter((col) => col !== column);
-    setColumns(newColumns);
+    setFilterByNumericValues(newFilterByNumericValues);
+    filterColumns(newFilterByNumericValues);
+    setValue('0');
+    setComparison('maior que');
   }
 
   return (
