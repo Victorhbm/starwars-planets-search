@@ -8,6 +8,7 @@ export default function Table() {
     filterByName,
     filterByNumericValues,
     setData,
+    order,
   } = useContext(PlanetsContext);
 
   const getPlanets = useCallback(
@@ -32,17 +33,37 @@ export default function Table() {
           .every((filterEl) => {
             switch (filterEl.comparison) {
             case 'maior que':
-              return Number(el[filterEl.column]) > Number(filterEl.value);
+              return Number(el[filterEl.columnFilter]) > Number(filterEl.value);
             case 'menor que':
-              return Number(el[filterEl.column]) < Number(filterEl.value);
+              return Number(el[filterEl.columnFilter]) < Number(filterEl.value);
             default:
-              return Number(el[filterEl.column]) === Number(filterEl.value);
+              return Number(el[filterEl.columnFilter]) === Number(filterEl.value);
             }
           }));
       return filteredResults;
     }
 
     return data;
+  }
+
+  function sortTable(elements) {
+    const MENOS_UM = -1;
+
+    if (elements.length > 0 && order.sort === 'ASC') {
+      return elements.sort((a, b) => a[order.column] - b[order.column]);
+    }
+    if (elements.length > 0 && order.sort === 'DESC') {
+      return elements.sort((a, b) => b[order.column] - a[order.column]);
+    }
+    if (elements.length > 0 && order.sort === 'ALF') {
+      return elements.sort((a, b) => {
+        if (a[order.column] > b[order.column]) return 1;
+        if (b[order.column] > a[order.column]) return MENOS_UM;
+        return 0;
+      });
+    }
+
+    return elements;
   }
 
   return (
@@ -65,13 +86,13 @@ export default function Table() {
         </tr>
       </thead>
       <tbody>
-        {filterPlanets()
+        {sortTable(filterPlanets())
           .filter((planet) => (
             planet.name.toLowerCase().includes(filterByName.name.toLowerCase())
           ))
           .map((planet) => (
             <tr key={ planet.name }>
-              <td>{planet.name}</td>
+              <td data-testid="planet-name">{planet.name}</td>
               <td>{planet.rotation_period}</td>
               <td>{planet.orbital_period}</td>
               <td>{planet.diameter}</td>
