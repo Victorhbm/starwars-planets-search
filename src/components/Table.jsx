@@ -1,8 +1,25 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useCallback } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
+import fetchPlanets from '../services/API';
 
 export default function Table() {
-  const { data, filterByName, filterByNumericValues } = useContext(PlanetsContext);
+  const {
+    data,
+    filterByName,
+    filterByNumericValues,
+    setData,
+  } = useContext(PlanetsContext);
+
+  const getPlanets = useCallback(
+    async () => {
+      const planets = await fetchPlanets();
+      setData(planets);
+    }, [setData],
+  );
+
+  useEffect(() => {
+    getPlanets();
+  }, [getPlanets]);
 
   function filterPlanets() {
     if (filterByNumericValues.length > 0 && data.length > 0) {
