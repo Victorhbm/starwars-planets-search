@@ -1,28 +1,30 @@
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
-import fetchPlanets from '../services/API';
+import React, { useState } from 'react';
 import PlanetsContext from './PlanetsContext';
 
 function Provider({ children }) {
   const [data, setData] = useState([]);
+  const allColumns = [
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ];
+  const [columns, setColumns] = useState(allColumns);
   const [filterByName, setFilterByName] = useState({ name: '' });
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
 
-  async function getPlanets() {
-    const planets = await fetchPlanets();
-    setData(planets);
-  }
-
-  useEffect(() => {
-    getPlanets();
-  }, []);
-
   const valueToContext = {
+    setData,
     data,
     setFilterByName,
     filterByName,
     setFilterByNumericValues,
     filterByNumericValues,
+    columns,
+    setColumns,
+    allColumns,
   };
 
   return (
