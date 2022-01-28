@@ -49,6 +49,13 @@ function Filter() {
     setComparison('maior que');
   }
 
+  async function removeFilter(fil) {
+    const removeSelectedFilter = filterByNumericValues.filter((filter) => filter !== fil);
+
+    setFilterByNumericValues(removeSelectedFilter);
+    filterColumns(removeSelectedFilter);
+  }
+
   return (
     <div>
       <input
@@ -102,6 +109,23 @@ function Filter() {
 
         <button type="submit" data-testid="button-filter">Filtrar</button>
       </form>
+
+      {filterByNumericValues.length > 0 && (
+        <div>
+          <p>Filtros:</p>
+          {filterByNumericValues.map((fil) => (
+            <div key={ fil.column } data-testid="filter">
+              <span>{`${fil.column} ${fil.comparison} ${fil.value}`}</span>
+              <button
+                type="button"
+                onClick={ () => removeFilter(fil) }
+              >
+                X
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
