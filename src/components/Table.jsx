@@ -21,21 +21,25 @@ export default function Table() {
     getPlanets();
   }, [getPlanets]);
 
+  /*
+  Logica de filterPlanets desenvolvida atraves da seguinte referencia:
+  https://dev.to/icelandico/filter-array-of-objects-with-multiple-conditions-4go3
+  */
   function filterPlanets() {
     if (filterByNumericValues.length > 0 && data.length > 0) {
-      const { column, comparison, value } = filterByNumericValues[0];
-      return data.filter((planet) => {
-        switch (comparison) {
-        case 'maior que':
-          return Number(planet[column]) > Number(value);
-        case 'menor que':
-          return Number(planet[column]) < Number(value);
-        case 'igual a':
-          return Number(planet[column]) === Number(value);
-        default:
-          return planet;
-        }
-      });
+      const filteredResults = data
+        .filter((el) => filterByNumericValues
+          .every((filterEl) => {
+            switch (filterEl.comparison) {
+            case 'maior que':
+              return Number(el[filterEl.column]) > Number(filterEl.value);
+            case 'menor que':
+              return Number(el[filterEl.column]) < Number(filterEl.value);
+            default:
+              return Number(el[filterEl.column]) === Number(filterEl.value);
+            }
+          }));
+      return filteredResults;
     }
 
     return data;
