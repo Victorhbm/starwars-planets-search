@@ -14,9 +14,13 @@ function Provider({ children }) {
   const [columns, setColumns] = useState(allColumns);
   const [filterByName, setFilterByName] = useState({ name: '' });
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
-  const [column, setColumn] = useState('population');
+  const [columnFilter, setColumnFilter] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState('0');
+  const [order, setOrder] = useState({
+    column: 'name',
+    sort: 'ALF',
+  });
 
   const valueToContext = {
     setData,
@@ -28,12 +32,14 @@ function Provider({ children }) {
     setColumns,
     columns,
     allColumns,
-    setColumn,
-    column,
+    setColumnFilter,
+    columnFilter,
     setComparison,
     comparison,
     setValue,
     value,
+    setOrder,
+    order,
   };
 
   return (
