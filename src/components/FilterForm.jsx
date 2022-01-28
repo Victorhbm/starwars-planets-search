@@ -7,8 +7,8 @@ function FilterForm() {
     filterByNumericValues,
     setColumns,
     columns,
-    column,
-    setColumn,
+    columnFilter,
+    setColumnFilter,
     allColumns,
     setComparison,
     comparison,
@@ -19,10 +19,10 @@ function FilterForm() {
   function filterColumns(filterNumeric) {
     const newFilterColumns = allColumns
       .filter((item) => !filterNumeric
-        .some((el) => el.column === item));
+        .some((el) => el.columnFilter === item));
     setColumns(newFilterColumns);
 
-    setColumn(newFilterColumns[0]);
+    setColumnFilter(newFilterColumns[0]);
   }
 
   function sendFilter(e) {
@@ -31,7 +31,7 @@ function FilterForm() {
     const newFilterByNumericValues = [
       ...filterByNumericValues,
       {
-        column,
+        columnFilter,
         comparison,
         value,
       },
@@ -48,11 +48,11 @@ function FilterForm() {
       <label htmlFor="column">
         {'Coluna: '}
         <select
-          id="column"
-          name="column"
+          id="columnFilter"
+          name="columnFilter"
           data-testid="column-filter"
-          value={ column }
-          onChange={ (e) => setColumn(e.target.value) }
+          value={ columnFilter }
+          onChange={ (e) => setColumnFilter(e.target.value) }
         >
           {columns.map((col) => (
             <option value={ col } key={ col }>{ col }</option>

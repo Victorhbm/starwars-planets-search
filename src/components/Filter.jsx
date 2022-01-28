@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 import FilterForm from './FilterForm';
+import SortForm from './SortForm';
 
 function Filter() {
   const [name, setName] = useState('');
@@ -9,7 +10,7 @@ function Filter() {
     setFilterByNumericValues,
     filterByNumericValues,
     setColumns,
-    setColumn,
+    setColumnFilter,
     allColumns,
   } = useContext(PlanetsContext);
 
@@ -23,10 +24,10 @@ function Filter() {
   function filterColumns(filterNumeric) {
     const newFilterColumns = allColumns
       .filter((item) => !filterNumeric
-        .some((el) => el.column === item));
+        .some((el) => el.columnFilter === item));
     setColumns(newFilterColumns);
 
-    setColumn(newFilterColumns[0]);
+    setColumnFilter(newFilterColumns[0]);
   }
 
   async function removeFilter(fil) {
@@ -46,13 +47,14 @@ function Filter() {
       />
 
       <FilterForm />
+      <SortForm />
 
       {filterByNumericValues.length > 0 && (
         <div>
           <p>Filtros:</p>
           {filterByNumericValues.map((fil) => (
-            <div key={ fil.column } data-testid="filter">
-              <span>{`${fil.column} ${fil.comparison} ${fil.value}`}</span>
+            <div key={ fil.columnFilter } data-testid="filter">
+              <span>{`${fil.columnFilter} ${fil.comparison} ${fil.value}`}</span>
               <button
                 type="button"
                 onClick={ () => removeFilter(fil) }
